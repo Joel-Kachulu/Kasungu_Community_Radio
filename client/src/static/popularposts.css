@@ -1,0 +1,11 @@
+/* popularPosts.css */
+.popular-posts-section {
+  margin-bottom: 20px; /* Spacing from other components */
+  padding: 20px;
+}
+
+.popular-posts-container {
+  display: flex;
+  flex-direction: column; /* Stack the cards vertically */
+  gap: 15px; /* Space between cards */
+}

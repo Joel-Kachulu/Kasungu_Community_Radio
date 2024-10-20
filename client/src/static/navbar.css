@@ -1,0 +1,106 @@
+/* NavBar.css */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: #3EB218;
+    --secondary-color: #f44336;
+    --text-color: #eee;
+    --font-family: 'Arial', sans-serif;
+}
+
+body, html {
+    width: 100%;
+    overflow-x: hidden;
+    font-family: var(--font-family);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 2rem;
+    background: var(--main-color);
+    color: var(--text-color);
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    height: 80px;
+    background-color: #eee;
+}
+
+/* Centering the navigation links */
+nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the nav links */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem; /* Spacing between nav items */
+    font-weight: bold;
+}
+
+nav ul li {
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+nav ul li:hover {
+    color: var(--secondary-color);
+}
+
+/* Hamburger icon */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* Responsive navigation */
+@media only screen and (max-width: 1024px) {
+    .hamburger {
+        display: block; /* Show hamburger on smaller screens */
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: var(--main-color);
+        transform: translateY(-100vh);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .responsive_nav {
+        transform: translateY(0); /* Show the menu */
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    nav ul li {
+        font-size: 1.5rem;
+    }
+}

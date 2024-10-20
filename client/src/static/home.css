@@ -1,0 +1,133 @@
+/* Base styling */
+body {
+    font-family: var(--font-family);
+    color: #333;
+    line-height: 1.6;
+}
+
+.content {
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 1200px; /* Ensures alignment with other components */
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+}
+
+p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Structure for main content */
+.main-content {
+    display: flex;
+    gap: 5px; /* Space between left-content and right-sidebar */
+}
+
+.left-content {
+    flex: 3; /* The left section (LatestNews, Categories, EditorsPicks) takes up 3/4 of the width */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between components */
+}
+
+.right-sidebar {
+    flex: 1; /* The right sidebar (PopularPosts) takes up 1/4 of the width */
+    display: flex;
+    flex-direction: column;
+    
+}
+
+/* Slider section */
+.slider-container {
+    margin-bottom: 30px; /* Spacing below the slider */
+}
+
+/* Footer styling */
+footer {
+    background: var(--main-color);
+    color: var(--text-color);
+    text-align: center;
+    padding: 2rem 0;
+    position: relative;
+    width: 100%;
+}
+
+/* Other content components */
+.latest-news,
+.categories,
+.editors-picks,
+.popular-posts {
+    margin-bottom: 2rem;
+}
+
+/* Ensure cards are well-aligned in each component */
+.latest-news-container,
+.popular-posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .main-content {
+        flex-direction: column; /* Stack left-content and right-sidebar */
+    }
+
+    .left-content, .right-sidebar {
+        flex: none; /* Remove flex proportions */
+        width: 100%; /* Take full width */
+    }
+
+    /* Adjust the slider to fit smaller screens */
+    .slider-container {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        padding: 20px; /* Reduce padding */
+    }
+
+    .main-content {
+        gap: 15px; /* Increase gap between components */
+    }
+
+    .left-content, .right-sidebar {
+        width: 100%; /* Both sections take full width */
+    }
+
+    /* Further reduce the gap between cards on smaller screens */
+    .latest-news-container,
+    .popular-posts-container {
+        gap: 3px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .content {
+        padding: 10px;
+    }
+
+    /* Stack the main content completely on small screens */
+    .main-content {
+        gap: 10px; /* Reduce gap between sections */
+    }
+
+    /* Smaller font sizes for readability */
+    h1, h2, h3 {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    footer {
+        padding: 1rem 0;
+    }
+}

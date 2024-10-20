@@ -1,0 +1,19 @@
+.editors-picks-container {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr); /* 2 cards per row */
+    gap: 20px; /* Space between cards */
+    justify-items: center; /* Center cards within the grid cells */
+}
+
+/* Adjust card size for editor picks */
+.news-card.small {
+    width: 300px; /* Increase width to 300px */
+    height: 300px; /* Increase height to 300px */
+}
+
+/* Ensure the content takes up 20% of the card height */
+.news-card .news-card-content {
+    padding: 10px;
+    flex-grow: 0; /* Prevent growing */
+    height: 20%; /* Limit the content area to 20% of the card height */
+}

@@ -1,0 +1,32 @@
+/* General news list container */
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spacing between sections */
+    width: 100%;
+}
+
+/* Featured news section: horizontal layout for the first item */
+.featured-news-section {
+    display: flex;
+    justify-content: center;  /* Center the featured item */
+    margin-bottom: 20px;
+}
+
+/* Regular news section: vertical cards layout */
+.regular-news-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));  /* Responsive grid */
+    gap: 20px; /* Spacing between vertical cards */
+}
+
+/* Responsive behavior for smaller screens */
+@media screen and (max-width: 768px) {
+    .featured-news-section {
+        justify-content: flex-start; /* Align to the left */
+    }
+
+    .regular-news-section {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust grid for smaller screens */
+    }
+}

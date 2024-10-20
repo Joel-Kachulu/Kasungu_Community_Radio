@@ -1,0 +1,36 @@
+/* Styling for LatestNews Section */
+.latest-news-section {
+    padding: 20px;
+}
+
+.latest-news-heading {
+    font-size: 24px;            
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Container for aligning cards horizontally */
+.latest-news-container {
+    display: flex;
+    gap: 5px; /* Space between the cards */
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding-bottom: 20px; /* Extra space at the bottom */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.latest-news-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.latest-news-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    text-align: center;
+}

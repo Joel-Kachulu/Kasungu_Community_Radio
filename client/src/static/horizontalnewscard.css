@@ -1,0 +1,74 @@
+/* HorizontalNewsCard styling */
+.horizontal-news-card {
+    display: flex;
+    flex-direction: row;
+    width: 350px; /* Adjust based on the required size */
+    height: 140px; /* Fixed height */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    gap: 5px;
+}
+
+.horizontal-news-card:hover {
+    transform: scale(1.02); /* Slight hover effect */
+}
+
+/* Image styling */
+.horizontal-news-card-image {
+    width: 140px; /* Set a fixed width for the image */
+    height: 100%; /* Full height */
+    object-fit: cover;
+    border-right: 1px solid #ddd; /* Border to separate image from content */
+}
+
+/* Content styling */
+.horizontal-news-card-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+/* Title styling */
+.horizontal-news-card-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    color: #222;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Description styling */
+.horizontal-news-card-description {
+    font-size: 14px;
+    color: #555;
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Author and date styling */
+.horizontal-news-card-author {
+    font-size: 12px;
+    color: #3EB218;
+    text-align: right;
+}
+
+/* Larger card variations */
+.horizontal-news-card.large {
+    width: 450px;
+    height: 180px;
+}

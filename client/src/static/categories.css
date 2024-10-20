@@ -1,0 +1,62 @@
+.categories-section {
+    margin: 40px auto;
+    max-width: 950px;
+    padding: 20px;
+}
+
+.categories-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Wrapping grid to allow horizontal scroll */
+.categories-grid-wrapper {
+    position: relative;
+}
+
+.categories-grid {
+    display: flex;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    gap: 10px; /* Space between cards */
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory; /* Ensure smooth scrolling to each card */
+}
+
+/* Hides scrollbars */
+.categories-grid::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in WebKit browsers */
+}
+.categories-grid {
+    -ms-overflow-style: none;  /* Hides scrollbar in IE and Edge */
+    scrollbar-width: none;     /* Hides scrollbar in Firefox */
+}
+
+.categories-grid > * {
+    flex: 0 0 22%; /* Shows 4 cards initially, slightly smaller than 25% */
+    scroll-snap-align: start; /* Each card snaps into place during scroll */
+}
+
+/* Style for the right pointing arrow */
+.scroll-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--main-color);
+    cursor: pointer;
+    animation: bounce 1.5s infinite; /* Add bounce animation to draw attention */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}

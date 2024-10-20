@@ -1,0 +1,88 @@
+/* Slider container */
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 400px; /* Adjust the height as needed */
+  overflow: hidden;
+  margin-bottom: 20px; /* Space below the slider */
+  border: 1px solid;
+  border-radius: 15px;
+  margin-top: 50px;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Slider image should cover the entire space */
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover maintains aspect ratio */
+  display: block;
+}
+
+/* Content overlay */
+.slider-content {
+  position: absolute;
+  bottom: 10px; /* Push the content up from the bottom */
+  left: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Slider title */
+.slider-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Slider description */
+.slider-description {
+  font-size: 16px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only up to 3 lines */
+  -webkit-box-orient: vertical;
+  color: white;
+}
+
+/* Arrow button for next slide */
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.arrow-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.no-image-placeholder {
+  background-color: #f0f0f0; /* Light background color */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #333;
+  font-size: 20px;
+  padding: 20px;
+}

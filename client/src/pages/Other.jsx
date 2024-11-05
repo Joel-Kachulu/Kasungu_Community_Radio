@@ -11,7 +11,7 @@ const Other = () => {
     // Fetch business news articles from the backend
     const fetchOtherNews = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5000/api/news/category/Other news');
+            const response = await axios.get('http://127.0.0.1:5000/api/news/category/Other');
             setOtherNews(Object.values(response.data)); // Set the fetched data
         } catch (error) {
             setError('Error fetching other news'); // Handle error
@@ -26,11 +26,11 @@ const Other = () => {
     return (
         <div>
             <Navigation />
-            <h3>Other News</h3>
+            <h2>Other News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (
-                <NewsList news={otherNews} /> // Pass the fetched news to NewsList
+                <NewsList news={otherNews} pageTitle={'Other'} /> // Pass the fetched news to NewsList
             )}
             <Footer />
         </div>

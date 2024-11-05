@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import HorizontalNewsCard from "./HorizontalNewsCard";
+import { useNavigate } from 'react-router-dom';
 import NewsCard from "./NewsCard";
 import '../static/popularPosts.css';
 
 const PopularPosts = () => {
     const [popularData, setPopularData] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // Initialize navigate
 
     // Fetch popular posts from the backend API
     const fetchPopularPosts = async () => {
@@ -13,7 +14,7 @@ const PopularPosts = () => {
             const response = await fetch('http://127.0.0.1:5000/api/news/popular');
             if (response.ok) {
                 const data = await response.json();
-                const posts = Object.values(data);
+                const posts = Object.values(data.popular);
                 setPopularData(posts);
             } else {
                 setError('Failed to fetch popular posts.');
@@ -28,6 +29,11 @@ const PopularPosts = () => {
         fetchPopularPosts();
     }, []);
 
+    // Function to handle card click
+    const handleCardClick = (id) => {
+        navigate(`/news/${id}`); // Navigate to full news page by ID
+    };
+
     return (
         <div className="popular-posts-section">
             <h2>Popular Posts</h2>
@@ -37,15 +43,16 @@ const PopularPosts = () => {
                 <div className="popular-posts-container">
                     {popularData.length > 0 ? (
                         popularData.map((post) => (
-                            <NewsCard
-                                key={post.id}
-                                image={post.image_url}
-                                title={post.title}
-                                description={post.content}
-                                author={post.author}
-                                date={new Date(post.published_at).toLocaleDateString()}
-                                size="large" // Adjust the size if needed
-                            />
+                            <div key={post.id} onClick={() => handleCardClick(post.id)}>
+                                <NewsCard
+                                    image={post.image_url}
+                                    title={post.title}
+                                    description={post.content}
+                                    author={post.author}
+                                    date={new Date(post.published_at).toLocaleDateString()}
+                                    size="medium" // Adjust the size if needed
+                                />
+                            </div>
                         ))
                     ) : (
                         <p>Loading popular posts...</p>

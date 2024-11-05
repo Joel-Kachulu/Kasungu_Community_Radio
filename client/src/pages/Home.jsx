@@ -8,6 +8,8 @@ import EditorsPicks from '../components/EditorsPicks';
 import PopularPosts from '../components/PopularPosts';
 import Comments from '../components/Comments';
 import Footer from '../components/Footer';
+import RecentComments from '../components/RecentComments';
+import CommentForm from '../components/CommentForm';
 
 import '../static/home.css'; 
 
@@ -16,7 +18,10 @@ const Home = () => {
         <div>
             <Navigation />
             <div className="content">
-                <Slider />
+                <div className="slider">
+                   <Slider />
+                </div>
+                
                 <div className="main-content">
                     <div className="left-content">
                         <LatestNews />
@@ -28,7 +33,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <Comments />
+            <RecentComments />
+            <CommentForm />
             <Footer />
         </div>
     );

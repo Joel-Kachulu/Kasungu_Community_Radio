@@ -26,11 +26,11 @@ const Politics = () => {
     return (
         <div>
             <Navigation />
-            <h3>Politics News</h3>
+            <h2>Politics</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (
-                <NewsList news={politicsNews} /> // Pass the fetched news to NewsList
+                <NewsList news={politicsNews} pageTitle="Politics" /> // Pass the fetched news to NewsList
             )}
             <Footer />
         </div>

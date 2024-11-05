@@ -1,32 +1,82 @@
-/* General news list container */
+/* Scoped NewsList Styles */
 .news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Spacing between sections */
-    width: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
 }
 
-/* Featured news section: horizontal layout for the first item */
-.featured-news-section {
-    display: flex;
-    justify-content: center;  /* Center the featured item */
-    margin-bottom: 20px;
+/* Section titles */
+.news-list h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: left;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 8px;
 }
 
-/* Regular news section: vertical cards layout */
-.regular-news-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));  /* Responsive grid */
-    gap: 20px; /* Spacing between vertical cards */
+/* Latest News section */
+.news-list .latest-news-section {
+  margin-bottom: 40px;
 }
 
-/* Responsive behavior for smaller screens */
-@media screen and (max-width: 768px) {
-    .featured-news-section {
-        justify-content: flex-start; /* Align to the left */
-    }
-
-    .regular-news-section {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust grid for smaller screens */
-    }
+.news-list .latest-news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(200px, 1fr)); /* 4 smaller columns */
+  gap: 20px;
+  justify-content: center;
+  margin: 0 auto;
 }
+
+/* Horizontal News Card adjustments within NewsList */
+.news-list .horizontal-news-card {
+  border: none;
+  box-shadow: none;
+  padding: 4px;
+  display: flex;
+  flex-direction: row;
+  height: 200px; /* Reduce the height */
+  background: #f9f9f9;
+  gap: 10px;
+}
+
+.news-list .horizontal-news-card-image {
+  width: 35%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-list .horizontal-news-card-content {
+  width: 65%;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-list .horizontal-news-card-title {
+  font-size: 14px; /* Reduced font size */
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.news-list .horizontal-news-card-description {
+  font-size: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  text-align: justify;
+  
+}
+
+.news-list .horizontal-news-card-author {
+  font-size: 11px;
+  color: #777;
+  border-top: 1px solid gray;
+}
+

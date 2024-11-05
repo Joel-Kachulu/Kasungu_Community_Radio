@@ -8,11 +8,11 @@ body {
 .content {
     padding: 40px;
     margin: 0 auto;
-    max-width: 1200px; /* Ensures alignment with other components */
+    max-width: 1400px; /* Ensures alignment with other components */
 }
 
 h1, h2, h3 {
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 p {
@@ -24,26 +24,29 @@ p {
 .main-content {
     display: flex;
     gap: 5px; /* Space between left-content and right-sidebar */
+    margin: 0, auto;
 }
 
 .left-content {
     flex: 3; /* The left section (LatestNews, Categories, EditorsPicks) takes up 3/4 of the width */
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between components */
+    gap: 5px; /* Space between components */
+    border-left: 1px solid var(--secondary-color);
+    
 }
 
 .right-sidebar {
     flex: 1; /* The right sidebar (PopularPosts) takes up 1/4 of the width */
     display: flex;
     flex-direction: column;
+    border-right: 1px solid #3EB218;
+    
     
 }
 
 /* Slider section */
-.slider-container {
-    margin-bottom: 30px; /* Spacing below the slider */
-}
+
 
 /* Footer styling */
 footer {

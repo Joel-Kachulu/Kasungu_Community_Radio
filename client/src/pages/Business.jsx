@@ -26,11 +26,11 @@ const Business = () => {
     return (
         <div>
             <Navigation />
-            <h3>Business News</h3>
+            <h2>Business</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (
-                <NewsList news={businessNews} /> // Pass the fetched news to NewsList
+                <NewsList news={businessNews} pageTitle="Business" /> // Pass the fetched news to NewsList
             )}
             <Footer />
         </div>

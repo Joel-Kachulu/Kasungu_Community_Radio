@@ -8,6 +8,9 @@ import Business from './pages/Business';
 import Health from './pages/Health';
 import Politics from './pages/Politics';
 import Home from './pages/Home';
+import FullNews from './components/FullNews';
+import SearchResults from './components/SearchResults';
+
 
 
 function App() {
@@ -23,6 +26,8 @@ function App() {
         <Route path="/Business" element={<Business />} />
         <Route path="/Health" element={<Health />} />
         <Route path="/Other" element={<Other />} />
+        <Route path="/news/:id" element={<FullNews />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
     </Router>
   </div>

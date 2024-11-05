@@ -1,8 +1,19 @@
+.editors-pick-section{
+    padding: 20px;
+    margin: 40px;
+    width: 100%;
+}
+
+.editors-pick-heading {         
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
 .editors-picks-container {
     display: grid;
     grid-template-columns: repeat(2, 2fr); /* 2 cards per row */
-    gap: 20px; /* Space between cards */
-    justify-items: center; /* Center cards within the grid cells */
+    gap: 10px; /* Space between cards */
+    justify-items: flex-start; /* Center cards within the grid cells */
 }
 
 /* Adjust card size for editor picks */

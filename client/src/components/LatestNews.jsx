@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import NewsCard from './NewsCard';
 import '../static/latestNews.css';
 
 const LatestNews = () => {
     const [newsData, setNewsData] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // Initialize navigate
 
     const fetchLatestNews = async () => {
         try {
@@ -24,6 +26,11 @@ const LatestNews = () => {
         fetchLatestNews();
     }, []);
 
+    // Function to handle card click
+    const handleCardClick = (id) => {
+        navigate(`/news/${id}`); // Navigate to full news page by ID
+    };
+
     return (
         <div className="latest-news-section">
             <h2 className="latest-news-heading">Latest News</h2>
@@ -33,15 +40,16 @@ const LatestNews = () => {
             ) : newsData.length > 0 ? (
                 <div className="latest-news-container">
                     {newsData.slice().reverse().map((article) => (
-                        <NewsCard
-                            key={article.id}
-                            image={article.image_url}
-                            title={article.title}
-                            description={article.content}
-                            author={article.author}
-                            date={new Date(article.published_at).toLocaleDateString()}
-                            size="medium" // Size for LatestNews
-                        />
+                        <div key={article.id} onClick={() => handleCardClick(article.id)}>
+                            <NewsCard
+                                id={article.id}
+                                image={article.image_url}
+                                title={article.title}
+                                description={article.content}
+                                author={article.author}
+                                date={new Date(article.published_at).toLocaleDateString()}
+                            />
+                        </div>
                     ))}
                 </div>
             ) : (

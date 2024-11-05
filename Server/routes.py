@@ -16,12 +16,26 @@ def allowed_file(filename):
 def uploaded_file(filename):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
+
+@news_blueprint.route('/api/upload-image', methods=['POST'])
+def upload_image():
+    image = request.files.get('image')
+    if image and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        image.save(image_path)
+        image_url = f'http://127.0.0.1:5000/uploads/{filename}'  # Return public URL
+        return jsonify({'image_url': image_url}), 201
+
+    return jsonify({'error': 'Invalid file format'}), 400
+
+
 @news_blueprint.route('/api/news', methods=['POST'])
 def create_article():                         
     title = request.form.get('title')
-    content = request.form.get('content')
+    content = request.form.get('content')  # Stores HTML content with embedded images
     category = request.form.get('category')
-    image = request.files.get('image')
+    image = request.files.get('image')  # Cover image
     author = request.form.get('author')
     is_editor_pick = request.form.get('is_editor_pick', 'false') == 'true'
     is_popular = request.form.get('is_popular', 'false') == 'true'
@@ -29,6 +43,7 @@ def create_article():
     if not title or not content or not category:
         return jsonify({'error': 'Title, content, and category are required fields'}), 400
 
+    # Handle cover image upload if provided
     image_url = None
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
@@ -37,11 +52,11 @@ def create_article():
         # Use a full public URL for the image
         image_url = f'http://127.0.0.1:5000/uploads/{filename}'
 
-
+    # Create a new article
     new_article = News(
         title=title,
         content=content,
-        image_url=image_url,  # Store the URL instead of the local path
+        image_url=image_url,  # Stores the cover image URL
         category=category,
         author=author,
         is_editor_pick=is_editor_pick,
@@ -54,15 +69,16 @@ def create_article():
     return jsonify({'message': 'Article created successfully', 'article_id': new_article.id}), 201
 
 
+
 # Update a news article
 @news_blueprint.route('/api/news/<int:article_id>', methods=['PUT'])
 def update_article(article_id):
-    article = News.query.get(article_id)
+    article = News.query.get(article_id) #Id srored in article
     
     if not article:
-        return jsonify({'error': 'Article not found'}), 404
+        return jsonify({'error': 'Article not found'}), 404 
 
-    title = request.form.get('title', article.title)
+    title = request.form.get('title', article.title)   #gettings article data from user form and storing pushing to queried article data
     content = request.form.get('content', article.content)
     category = request.form.get('category', article.category)
     image = request.files.get('image')
@@ -130,6 +146,7 @@ def get_articles_by_category(category):  # Add 'category' as a function argument
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+    
 
 @news_blueprint.route('/api/news/random_by_category', methods=['GET'])
 def get_random_article_by_category():
@@ -163,7 +180,21 @@ def get_random_article_by_category():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
   
+#returns article sum and latest sum of that category
+@news_blueprint.route('/api/news/categories/sum', methods=['GET'])
+def get_all_categories():
+    try:
+        # Get distinct categories
+        categories = News.query.with_entities(News.category).distinct().all()
+        article_sum = 10 + 20  # Extract sum 
+        if article_sum == 30:
+          res = "Nyatwa"
+            
 
+          return jsonify({'sum':  res}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 
 # Get latest news articles
 @news_blueprint.route('/api/news/latest', methods=['GET'])
@@ -231,7 +262,7 @@ def get_popular_posts():
                 'category': article.category,
                 'author': article.author
             }
-        return jsonify(articles_dict), 200
+        return jsonify({'popular': articles_dict}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -300,6 +331,28 @@ def add_comment(article_id):
     return jsonify({'message': 'Comment added successfully'}), 201
 
 
+@news_blueprint.route('/api/news/comments/recent', methods=['GET'])
+def get_recent_comments():
+     comments = (
+        db.session.query(Comment, News.title)
+        .join(News, Comment.article_id == News.id)
+        .all()
+    )
+
+    # Format the comments to include article title
+     comments_list = [
+         {
+             "author": comment.author,
+             "content": comment.content,
+             "article_id": comment.article_id,
+             "article_title": title  # add title from News model here
+         }
+         for comment, title in comments
+     ]
+ 
+     return jsonify({"comments": comments_list}), 200
+
+
 # Register a new user
 @news_blueprint.route('/api/users/register', methods=['POST'])
 def register_user():
@@ -341,4 +394,33 @@ def login_user():
     return jsonify({'message': 'Logged in successfully', 'user_id': user.id}), 200
 
 
+# Get an article by ID
+@news_blueprint.route('/api/news/<int:article_id>', methods=['GET'])
+def get_article_by_id(article_id):
+    try:
+        # Query the database for the article with the given ID
+        article = News.query.get(article_id)
 
+        if not article:
+            return jsonify({'error': 'Article not found'}), 404
+
+        # Convert the article object to a dictionary format
+        article_data = {
+            'id': article.id,
+            'title': article.title,
+            'content': article.content,
+            'image_url': article.image_url,
+            'published_at': article.published_at,
+            'category': article.category,
+            'author': article.author
+        }
+
+        return jsonify(article_data), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
+    #add route that returns the total number of news articles published in each category and the sum of the latest in that category too
+    #i will connect to the categories component, the category cards will have to render category name, how many articles in that category /n
+    # and how many are latest and a simple description

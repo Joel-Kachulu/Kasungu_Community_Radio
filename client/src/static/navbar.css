@@ -6,10 +6,11 @@
 }
 
 :root {
-    --main-color: #3EB218;
-    --secondary-color: #f44336;
-    --text-color: #eee;
+    --main-color: #ffffff;
+    --secondary-color: #FE2718;
+    --text-color: #000000;
     --font-family: 'Arial', sans-serif;
+    --primary-color: #3EB218;
 }
 
 body, html {
@@ -24,7 +25,7 @@ header {
     justify-content: space-between;
     height: 80px;
     padding: 0 2rem;
-    background: var(--main-color);
+    background: var(--primary-color);
     color: var(--text-color);
     width: 100vw;
     position: fixed;
@@ -71,6 +72,31 @@ nav ul li:hover {
     color: var(--text-color);
 }
 
+.search-form {
+    display: flex;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+.search-form input {
+    padding: 5px;
+    background-color: #eee;
+    color: black;
+    border-radius: 20px;
+    border: 1px;
+    border-right: none;
+}
+
+.search-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 20px;
+    
+}
+
+
 /* Responsive navigation */
 @media only screen and (max-width: 1024px) {
     .hamburger {
@@ -104,3 +130,4 @@ nav ul li:hover {
         font-size: 1.5rem;
     }
 }
+

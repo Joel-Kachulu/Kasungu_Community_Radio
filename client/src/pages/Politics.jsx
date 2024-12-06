@@ -26,7 +26,7 @@ const Politics = () => {
     return (
         <div>
             <Navigation />
-            <h2>Politics</h2>
+            <h2>Politics News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (

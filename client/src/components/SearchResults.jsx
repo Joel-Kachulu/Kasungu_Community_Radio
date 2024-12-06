@@ -11,7 +11,7 @@ const SearchResults = () => {
         const params = new URLSearchParams(location.search);
         const keyword = params.get('keyword');
 
-        fetch(`http://127.0.0.1:5000/api/news/search?keyword=${keyword}`)
+        fetch(`http://localhost:5000/api/news/search?keyword=${keyword}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) setError(data.error);
@@ -35,7 +35,7 @@ const SearchResults = () => {
                     </Link>
                 ))
             ) : (
-                <p style={styles.noResults}>No articles found</p>
+                <p style={styles.noResults}></p>
             )}
         </div>
     );
@@ -47,6 +47,7 @@ const styles = {
         margin: '0 auto',
         padding: '2rem',
         fontFamily: 'Arial, sans-serif',
+        marginTop: '40px'
     },
     error: {
         color: 'red',

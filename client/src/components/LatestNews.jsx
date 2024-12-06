@@ -31,6 +31,16 @@ const LatestNews = () => {
         navigate(`/news/${id}`); // Navigate to full news page by ID
     };
 
+    // Function to clean the HTML content (remove <img> tags and truncate text)
+    const cleanContent = (content) => {
+        // Remove <img> tags using a regular expression
+        const contentWithoutImages = content.replace(/<img[^>]*>/g, '');
+        // Truncate text to the first 100 characters (or adjust as needed)
+        return contentWithoutImages.length > 100
+            ? contentWithoutImages.substring(0, 100) + '...'
+            : contentWithoutImages;
+    };
+
     return (
         <div className="latest-news-section">
             <h2 className="latest-news-heading">Latest News</h2>
@@ -45,7 +55,8 @@ const LatestNews = () => {
                                 id={article.id}
                                 image={article.image_url}
                                 title={article.title}
-                                description={article.content}
+                                // Clean the content by removing <img> tags and truncating
+                                description={<div dangerouslySetInnerHTML={{ __html: cleanContent(article.content) }} />}
                                 author={article.author}
                                 date={new Date(article.published_at).toLocaleDateString()}
                             />

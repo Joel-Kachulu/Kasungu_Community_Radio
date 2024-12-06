@@ -26,7 +26,7 @@ const Health = () => {
     return (
         <div>
             <Navigation />
-            <h2>Health</h2>
+            <h2>Health News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (

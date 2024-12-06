@@ -1,82 +1,49 @@
-/* Scoped NewsList Styles */
-.news-list {
+/* NewsList Component Styles */
+.news-list-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
 }
 
-/* Section titles */
-.news-list h3 {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 15px;
-  text-align: left;
-  border-bottom: 2px solid #eaeaea;
-  padding-bottom: 8px;
-}
-
-/* Latest News section */
-.news-list .latest-news-section {
+/* Latest News Section */
+.news-list-latest-news {
   margin-bottom: 40px;
 }
 
-.news-list .latest-news-grid {
+.news-list-latest-news-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(200px, 1fr)); /* 4 smaller columns */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
   gap: 20px;
-  justify-content: center;
-  margin: 0 auto;
 }
 
-/* Horizontal News Card adjustments within NewsList */
-.news-list .horizontal-news-card {
-  border: none;
-  box-shadow: none;
-  padding: 4px;
-  display: flex;
-  flex-direction: row;
-  height: 200px; /* Reduce the height */
-  background: #f9f9f9;
-  gap: 10px;
+/* More News Section */
+.news-list-more-news {
+  margin-top: 40px;
 }
 
-.news-list .horizontal-news-card-image {
-  width: 35%;
-  height: 100%;
-  object-fit: cover;
+.news-list-more-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 20px;
 }
 
-.news-list .horizontal-news-card-content {
-  width: 65%;
-  padding-left: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.news-list-card {
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.news-list .horizontal-news-card-title {
-  font-size: 14px; /* Reduced font size */
-  margin-bottom: 5px;
-  font-weight: bold;
+.news-list-card:hover {
+  transform: scale(1.02); /* Slight scaling effect */
 }
 
-.news-list .horizontal-news-card-description {
-  font-size: 12px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limit to 3 lines */
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  line-height: 1.5;
-  text-align: justify;
-  
+/* NewsCard styles if needed */
+.news-card-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 
-.news-list .horizontal-news-card-author {
-  font-size: 11px;
-  color: #777;
-  border-top: 1px solid gray;
+.news-card-wrapper .card-content {
+  margin-top: 10px;
 }
-

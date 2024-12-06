@@ -26,7 +26,7 @@ const National = () => {
     return (
         <div>
             <Navigation />
-            <h2>National</h2>
+            <h2>National News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (

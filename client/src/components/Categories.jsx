@@ -26,9 +26,11 @@ const Categories = () => {
     }, []);
 
     // Function to handle card click
-    const handleCardClick = (id) => {
-        navigate(`/news/${id}`); // Navigate to full news page by ID
-    }
+    const handleCardClick = (category) => {
+        navigate(`/news/category/${category}`);
+    };
+    
+    
 
     return (
         <div className="categories-section">
@@ -39,10 +41,11 @@ const Categories = () => {
                 <div className="categories-grid-wrapper">
                     <div className="categories-grid">
                         {categoriesData.map((category, index) => (
-                            <div key={index} onClick={() => handleCardClick(category.id)}>
+                            <div key={index} onClick={() => handleCardClick(category.category)}>
                                 <NewsCard
                                     image={category.image_url} // Dynamically set image from backend
-                                    title={category.category} // Dynamically set category title
+                                    title={category.category + " News here"} // Dynamically set category title
+                                    author={'by '+ category.author}
                                     size="medium"
                                 />
                             </div>

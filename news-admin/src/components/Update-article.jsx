@@ -1,225 +1,215 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import '../static/update-article.css';
+import 'react-quill/dist/quill.snow.css';
+import '../static/Add-article.css';
+import Sidebar from './Sidebar';
 
-const UpdateArticle = ({ articleId }) => {
+const UpdateArticle = () => {
+  const { id } = useParams(); // Get the article ID from the URL
   const [formData, setFormData] = useState({
     title: '',
     content: '',
     category: '',
     author: '',
-    is_editor_pick: false,
-    is_popular: false,
-    image: null
+    coverImage: null, // Can be a URL or a File
+    isPopular: false,
+    isEditorPick: false,
   });
-  const [preview, setPreview] = useState(false);
-  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Fetch existing article data on component load
+  // Fetch the article details to prepopulate the form
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:5000/api/news/${articleId}`)
-      .then((response) => {
-        const data = response.data;
-        setFormData({
-          title: data.title,
-          content: data.content,
-          category: data.category,
-          author: data.author,
-          is_editor_pick: data.is_editor_pick,
-          is_popular: data.is_popular,
-          image: null // Image not prefetched
-        });
-      })
-      .catch((error) => console.error('Error fetching article:', error));
-  }, [articleId]);
+    const fetchArticle = async () => {
+      try {
+        const response = await axios.get(`http://192.168.43.144:5000/api/news/${id}`);
+        if (response.status === 200) {
+          const { title, content, category, author, image_url, isPopular, isEditorPick } = response.data;
+          setFormData({
+            title,
+            content,
+            category,
+            author,
+            coverImage: image_url,
+            isPopular,
+            isEditorPick,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching article:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Handle form input change
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    fetchArticle();
+  }, [id]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  // Handle Quill editor change
-  const handleEditorChange = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      content
-    }));
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData((prevState) => ({ ...prevState, coverImage: file }));
   };
 
-  // Handle file upload
-  const handleFileChange = (e) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      image: e.target.files[0]
-    }));
-  };
-
-  // Helper function to strip HTML tags
-  const stripHtml = (html) => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || '';
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Strip HTML from the content
-    const plainTextContent = stripHtml(formData.content);
+    const formPayload = new FormData();
+    formPayload.append('title', formData.title);
+    formPayload.append('content', formData.content);
+    formPayload.append('category', formData.category);
+    formPayload.append('author', formData.author);
+    formPayload.append('isPopular', formData.isPopular);
+    formPayload.append('isEditorPick', formData.isEditorPick);
 
-    // Prepare form data for submission
-    const data = new FormData();
-    for (const key in formData) {
-      if (key === 'content') {
-        data.append(key, plainTextContent);  // Add plain text content
-      } else {
-        data.append(key, formData[key]);
-      }
+    if (formData.coverImage instanceof File) {
+      formPayload.append('image', formData.coverImage);
     }
 
-    // Send PUT request to update the article
-    axios
-      .put(`http://127.0.0.1:5000/api/news/${articleId}`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        setMessage(response.data.message); // Display success message
-      })
-      .catch((error) => {
-        setMessage('Error updating article');
-        console.error('Error:', error);
-      });
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:5000/api/news/${id}`,
+        formPayload,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+
+      if (response.status === 200) {
+        alert('Article updated successfully');
+        navigate('/all-articles');
+      }
+    } catch (error) {
+      console.error('Error updating article:', error);
+      alert('Failed to update article');
+    }
   };
 
-  // Toggle Preview
-  const togglePreview = () => {
-    setPreview(!preview);
-  };
+  if (loading) {
+    return <p>Loading article...</p>;
+  }
 
   return (
-    <div className="update-article-container">
-      <div className="editor-container">
-        <h2>Update News Article</h2>
-
+    <div className="add-articles">
+      <div className="side">
+        <Sidebar />
+      </div>
+      <div className="add-articles-form">
+        <h1>Update Article</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input
               type="text"
               name="title"
-              placeholder="Title"
               value={formData.title}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              placeholder="Title"
               required
-              className="input-field"
             />
           </div>
-
           <div className="form-group">
             <input
               type="text"
               name="category"
-              placeholder="Category"
               value={formData.category}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              placeholder="Category"
               required
-              className="input-field"
             />
           </div>
-
           <div className="form-group">
             <input
               type="text"
               name="author"
-              placeholder="Author"
               value={formData.author}
-              onChange={handleChange}
+              onChange={handleInputChange}
+              placeholder="Author"
               required
-              className="input-field"
             />
           </div>
-
           <div className="form-group">
-            <label>
-              <input
-                type="checkbox"
-                name="is_editor_pick"
-                checked={formData.is_editor_pick}
-                onChange={handleChange}
+            <label htmlFor="coverImage">Cover Image</label>
+            <input type="file" name="coverImage" onChange={handleImageChange} />
+            {/* Preview current image */}
+            {formData.coverImage && !(formData.coverImage instanceof File) && (
+              <img
+                src={formData.coverImage}
+                alt="Current Cover"
+                style={{ width: '100px', marginTop: '10px' }}
               />
-              Editor's Pick
-            </label>
-
-            <label>
-              <input
-                type="checkbox"
-                name="is_popular"
-                checked={formData.is_popular}
-                onChange={handleChange}
-              />
-              Popular
-            </label>
+            )}
           </div>
-
-          <div className="form-group">
-            <input type="file" name="image" onChange={handleFileChange} />
-          </div>
-
           <div className="form-group">
             <ReactQuill
               value={formData.content}
-              onChange={handleEditorChange}
-              placeholder="Edit the article content here..."
-              className="quill-editor"
+              onChange={(value) => setFormData((prev) => ({ ...prev, content: value }))}
+              theme="snow"
               modules={{
                 toolbar: [
-                  [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                  [{ header: '1' }, { header: '2' }, { font: [] }],
                   [{ size: [] }],
-                  ['bold', 'italic', 'underline', 'strike'],
-                  [{ list: 'ordered' }, { list: 'bullet' }],
-                  ['link', 'image'],
-                  [{ align: [] }],
-                  ['clean']
-                ]
+                  ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                  [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+                  ['link', 'image', 'video'],
+                  ['clean'],
+                ],
               }}
+              formats={[
+                'header',
+                'font',
+                'size',
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'blockquote',
+                'list',
+                'bullet',
+                'indent',
+                'link',
+                'image',
+                'video',
+              ]}
+              placeholder="Write your article here..."
+              className="quill-editor"
             />
           </div>
 
-          <button type="button" className="preview-btn" onClick={togglePreview}>
-            {preview ? 'Hide Preview' : 'Show Preview'}
-          </button>
-          <button type="submit" className="submit-btn">
+          {/* Checkboxes for Popular and Editor's Pick */}
+          <div className="form-group-Radio">
+            <label>
+              <input
+                type="checkbox"
+                name="isPopular"
+                checked={formData.isPopular}
+                onChange={(e) =>
+                  setFormData((prevState) => ({ ...prevState, isPopular: e.target.checked }))
+                }
+              />
+              Popular
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="isEditorPick"
+                checked={formData.isEditorPick}
+                onChange={(e) =>
+                  setFormData((prevState) => ({ ...prevState, isEditorPick: e.target.checked }))
+                }
+              />
+              Editor's Pick
+            </label>
+          </div>
+          <button type="submit" className="submit-button">
             Update Article
           </button>
-
-          {/* Display the response message */}
-          {message && <p className="message">{message}</p>}
         </form>
-
-        {preview && (
-          <div className="article-preview">
-            <h2>Preview</h2>
-            <h3>{formData.title}</h3>
-            <p>
-              <strong>Author:</strong> {formData.author}
-            </p>
-            <p>
-              <strong>Category:</strong> {formData.category}
-            </p>
-            <div
-              className="content-preview"
-              dangerouslySetInnerHTML={{ __html: formData.content }}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,31 +1,56 @@
+/* RecentComments.css */
+
 .recent-comments-container {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-  }
-  
-  .comments-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .comment-item {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .comment-author {
-    font-weight: bold;
-  }
-  
-  .comment-content {
-    margin: 5px 0;
-  }
-  
-  .comment-date {
-    font-size: 0.9em;
-    color: #666;
-  }
-  
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recent-comments-container h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-item {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #0073e6;
+  margin-bottom: 5px;
+}
+
+.comment-content {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.comment-date {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 10px;
+}

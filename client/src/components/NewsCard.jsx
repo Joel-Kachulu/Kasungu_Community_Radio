@@ -10,7 +10,7 @@ const NewsCard = ({ id, image, title, description, date, author, size = 'medium'
                 <div className="news-card-content">
                     <h3 className="news-card-title">{title}</h3>
                     <p className="news-card-description">{description}</p>
-                    <p className="news-card-author">By {author} || {date}</p>
+                    <p className="news-card-author"> {author} || {date}</p>
                 </div>
             </div>
         </Link>

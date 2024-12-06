@@ -4,7 +4,8 @@ import axios from 'axios';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import CommentForm from './CommentForm';
-import RecentComments from './RecentComments'; // Import the RecentComments component
+import RecentComments from './RecentComments';
+import PopularPosts from './PopularPosts'
 import '../static/FullNews.css';
 
 const FullNews = () => {
@@ -35,12 +36,18 @@ const FullNews = () => {
         <h2 className="full-news-title">{news.title}</h2>
         <img src={news.image_url} alt={news.title} className="full-news-image" />
         <div className="full-news-content">
-          <p className="full-news-text">{news.content}</p>
+          {/* Use dangerouslySetInnerHTML to render HTML content */}
+          <div className="full-news-text" dangerouslySetInnerHTML={{ __html: news.content }}></div>
           <p className="full-news-meta">By {news.author} | {new Date(news.published_at).toLocaleDateString()}</p>
         </div>
-        <CommentForm articleId={id} onCommentAdded={fetchFullNews} />
-        {/* Display the RecentComments component */}
-        <RecentComments />
+        <div className="popular">
+          <PopularPosts pageTitle="Popular this week!" />
+        </div>
+        <div className="comments">
+          <CommentForm articleId={id} onCommentAdded={fetchFullNews} />
+          {/* Pass the article's category to RecentComments */}
+          <RecentComments category={news.category} />
+        </div>
       </div>
       <Footer />
     </div>
@@ -48,4 +55,3 @@ const FullNews = () => {
 };
 
 export default FullNews;
-      

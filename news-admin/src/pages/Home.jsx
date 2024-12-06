@@ -1,22 +1,19 @@
 import React from "react";
-import AddArticles from "../components/add-article";
-import DeleteArticle from "../components/Delete-aticle";
-import UpdateArticle from "../components/update-article";
+import Sidebar from "../components/Sidebar";
+import Dashboard from "./Dashboard";
+import "../static/Home.css";
 
 const Home = () => {
-    return(
-        <div>
-        <h2>this is myhome</h2>
-        <AddArticles />
-        <UpdateArticle />
-        <DeleteArticle />
-        
-      
-        
-      
-       
-        </div>
-    )
-}
+  return (
+    <div className="home-container">
+      <div className="home-sidebar">
+        <Sidebar />
+      </div>
+      <div className="home-content">
+        <Dashboard />
+      </div>
+    </div>
+  );
+};
 
 export default Home;

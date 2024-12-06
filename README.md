@@ -6,9 +6,10 @@ install all dependancies by installing the requirements ie "pip install -r requi
 run python app.py  
 
 Open Client:
-in new terminl for client run "npm install"
+in new terminal for client run "npm install"
 then npm run dev 
 
+navigate to news-admin
 use npm run dev to run the admin site too
 
 

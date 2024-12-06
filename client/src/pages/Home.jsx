@@ -1,25 +1,27 @@
 // Home.js
 import React from 'react'; 
 import Navigation from '../components/Navigation';
-import Slider from '../components/slider';
+import Slider from '../components/Slider';
 import LatestNews from '../components/LatestNews';
 import Categories from '../components/Categories';
 import EditorsPicks from '../components/EditorsPicks';
 import PopularPosts from '../components/PopularPosts';
-import Comments from '../components/Comments';
 import Footer from '../components/Footer';
-import RecentComments from '../components/RecentComments';
-import CommentForm from '../components/CommentForm';
-
+import Weather from '../components/Weather';
 import '../static/home.css'; 
 
 const Home = () => {
     return (
-        <div>
+        <div>z
             <Navigation />
             <div className="content">
+                <div className="top">
                 <div className="slider">
                    <Slider />
+                </div>
+                <div className="weather">
+                    <Weather />
+                </div>
                 </div>
                 
                 <div className="main-content">
@@ -29,12 +31,10 @@ const Home = () => {
                         <EditorsPicks />
                     </div>
                     <div className="right-sidebar">
-                        <PopularPosts />
+                        <PopularPosts pageTitle="Popular Posts"/>
                     </div>
                 </div>
             </div>
-            <RecentComments />
-            <CommentForm />
             <Footer />
         </div>
     );

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NewsCard from "./NewsCard";
 import '../static/popularPosts.css';
 
-const PopularPosts = () => {
+const PopularPosts = ({ pageTitle }) => {
     const [popularData, setPopularData] = useState([]);
     const [error, setError] = useState('');
     const navigate = useNavigate(); // Initialize navigate
@@ -11,7 +11,7 @@ const PopularPosts = () => {
     // Fetch popular posts from the backend API
     const fetchPopularPosts = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/news/popular');
+            const response = await fetch('http://localhost:5000/api/news/popular');
             if (response.ok) {
                 const data = await response.json();
                 const posts = Object.values(data.popular);
@@ -36,7 +36,7 @@ const PopularPosts = () => {
 
     return (
         <div className="popular-posts-section">
-            <h2>Popular Posts</h2>
+            <h2>{pageTitle}</h2>
             {error ? (
                 <p className="error-message">{error}</p>
             ) : (

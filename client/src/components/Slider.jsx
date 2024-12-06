@@ -9,7 +9,7 @@ const Slider = () => {
     // Fetch the latest news with images from the API
     const fetchLatestNewsImages = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/news/latest');
+            const response = await fetch('http://localhost:5000/api/news/latest');
             if (response.ok) {
                 const data = await response.json();
                 const articles = Object.values(data.articles);
@@ -36,7 +36,7 @@ const Slider = () => {
     useEffect(() => {
         const slideInterval = setInterval(() => {
             setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-        }, 7000); // Change slide every 5 seconds
+        }, 7000); // Change slide every 7 seconds
 
         return () => clearInterval(slideInterval); // Cleanup the interval on component unmount
     }, [slides.length]);
@@ -44,6 +44,16 @@ const Slider = () => {
     // Go to the next slide when the arrow button is clicked
     const nextSlide = () => {
         setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    };
+
+     // Function to clean the HTML content (remove <img> tags and truncate text)
+     const cleanContent = (content) => {
+        // Remove <img> tags using a regular expression
+        const contentWithoutImages = content.replace(/<img[^>]*>/g, '');
+        // Truncate text to the first 100 characters (or adjust as needed)
+        return contentWithoutImages.length > 100
+            ? contentWithoutImages.substring(0, 100) + '...'
+            : contentWithoutImages;
     };
 
     return (
@@ -70,10 +80,8 @@ const Slider = () => {
                         {/* Slide content displayed on top of image or placeholder */}
                         <div className="slider-content">
                             <h2 className="slider-title">{slides[currentSlide].title}</h2>
-                            <p className="slider-description">
-                                {slides[currentSlide].content.length > 100
-                                    ? `${slides[currentSlide].content.substring(0, 100)}...`
-                                    : slides[currentSlide].content}
+                            <p className="slider-description" 
+                               dangerouslySetInnerHTML={{ __html: cleanContent(slides[currentSlide].content )}}>
                             </p>
                         </div>
                     </div>

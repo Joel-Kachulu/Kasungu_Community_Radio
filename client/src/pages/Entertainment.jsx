@@ -26,7 +26,7 @@ const Entertainment = () => {
     return (
         <div>
             <Navigation />
-            <h2>Entertainment</h2>
+            <h2>Entertainment News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (

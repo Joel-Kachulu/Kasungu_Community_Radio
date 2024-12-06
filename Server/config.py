@@ -15,4 +15,11 @@ class Config:
      # Maximum allowed payload (16 MB)
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # Adjust this as needed
 
+    CATEGORY_COVER_IMAGES = {
+    "Sports": "https://example.com/sports-cover.jpg",
+    "Politics": "https://example.com/politics-cover.jpg",
+    "Entertainment": "https://example.com/entertainment-cover.jpg",
+    # Add more categories as needed
+}
+
     

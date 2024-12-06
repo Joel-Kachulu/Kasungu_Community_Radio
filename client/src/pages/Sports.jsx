@@ -26,7 +26,7 @@ const Sports = () => {
     return (
         <div>
             <Navigation />
-            <h2>Sports</h2>
+            <h2>Sports News</h2>
             {error ? (
                 <p>{error}</p> // Display error message if there's an error
             ) : (

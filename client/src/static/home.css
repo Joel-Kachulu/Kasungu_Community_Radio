@@ -4,11 +4,43 @@ body {
     color: #333;
     line-height: 1.6;
 }
+.slider{
+    flex: 3; /* Allocate more space to the slider */
+    max-width: 100%;
+}
+
+.weather {
+    flex: 1; /* Allow the weather component to take appropriate space */
+    max-width: 300px; /* Prevent excessive width */
+    padding: 20px;
+    margin: 20px auto 0 auto; /* Center the component horizontally */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for aesthetics */
+    background-color: #f9f9f9; /* Light background for better readability */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: auto; /* Adjust height based on content */
+    margin-top: 40px;
+}
+    
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    gap: 20px; /* Space between the slider and weather */
+    margin: 0 auto;
+}
 
 .content {
     padding: 40px;
     margin: 0 auto;
     max-width: 1400px; /* Ensures alignment with other components */
+    position: relative;
 }
 
 h1, h2, h3 {
@@ -32,7 +64,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 5px; /* Space between components */
-    border-left: 1px solid var(--secondary-color);
+    /*border-left: 2px solid var(--secondary-color);*/
     
 }
 
@@ -40,9 +72,9 @@ p {
     flex: 1; /* The right sidebar (PopularPosts) takes up 1/4 of the width */
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #3EB218;
-    
-    
+    border-right: "";
+    margin-top: 25px;
+    border-left: 1px solid var(--primary-color);
 }
 
 /* Slider section */
@@ -50,7 +82,7 @@ p {
 
 /* Footer styling */
 footer {
-    background: var(--main-color);
+    background: var(--primary-color);
     color: var(--text-color);
     text-align: center;
     padding: 2rem 0;
@@ -89,6 +121,22 @@ footer {
     .slider-container {
         margin-bottom: 20px;
     }
+
+    .weather {
+        max-width: 250px; /* Reduce width on smaller screens */
+        margin: 10px auto 0 auto;
+        padding: 15px;
+    }
+
+    .top {
+        flex-direction: column; /* Stack slider and weather vertically */
+        align-items: center;
+    }
+
+    .slider, .weather {
+        flex: none; /* Remove proportional allocation */
+        width: 100%; /* Take full width */
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -96,11 +144,16 @@ footer {
         padding: 20px; /* Reduce padding */
     }
 
+    .weather {
+        max-width: 200px;
+        padding: 10px;
+    }
+
     .main-content {
         gap: 15px; /* Increase gap between components */
     }
 
-    .left-content, .right-sidebar {
+    .left-content, .right-sidebar, .comments {
         width: 100%; /* Both sections take full width */
     }
 
@@ -119,6 +172,12 @@ footer {
     /* Stack the main content completely on small screens */
     .main-content {
         gap: 10px; /* Reduce gap between sections */
+    }
+
+    .weather {
+        max-width: 180px;
+        padding: 8px;
+        font-size: 0.9rem; /* Adjust font size for readability */
     }
 
     /* Smaller font sizes for readability */

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import HorizontalNewsCard from './HorizontalNewsCard';
-import NewsCard from './NewsCard';
+import NewsCard from './NewsCard';  // Only import NewsCard
 import '../static/newslist.css';
 
 const NewsList = ({ news = [], pageTitle }) => {
@@ -15,94 +14,53 @@ const NewsList = ({ news = [], pageTitle }) => {
   const latestNews = news.slice(0, 8); // First 8 articles for Latest News section
   const otherNews = news.slice(8); // Remaining articles for More News section
 
-  // Placeholders for empty slots in "Latest News"
-  const emptySlots = 8 - latestNews.length;
-  const emptyNewsCards = Array(emptySlots).fill(null);
-
   return (
-    <div className="news-list">
+    <div className="news-list-container">
       {/* Top section: Latest News */}
-      <div className="latest-news-section">
+      <div className="news-list-latest-news">
         <h3>{pageTitle} Latest News</h3>
-        <div className="latest-news-grid">
-          {latestNews.map((newsItem, index) => (
-            <div key={newsItem.id || index} onClick={() => handleCardClick(newsItem.id)}>
-              <HorizontalNewsCard
+        <div className="news-list-latest-news-grid">
+          {latestNews.map((newsItem) => (
+            <div key={newsItem.id} onClick={() => handleCardClick(newsItem.id)}>
+              <NewsCard
                 id={newsItem.id}
                 image={newsItem.image_url}
                 title={newsItem.title}
                 description={newsItem.content}
                 date={newsItem.published_at}
                 author={newsItem.author}
-                size="large"
+                size="small" // Large size for cards
               />
             </div>
-          ))}
-          {/* Placeholder cards for empty slots */}
-          {emptyNewsCards.map((_, index) => (
-            <HorizontalNewsCard
-              key={`placeholder-${index}`}
-              image="https://via.placeholder.com/350x180"
-              title="Loading news..."
-              description="This is a placeholder for news content."
-              date="----"
-              author="----"
-              size="large"
-            />
           ))}
         </div>
       </div>
 
       {/* Below section: More News */}
-      <div className="other-news-section">
-        <h3>More News</h3>
-        <div className="more-news-grid">
-          {/* First row: 6 vertical news cards */}
-          {otherNews.slice(0, 6).map((newsItem, index) => (
-            <div key={newsItem.id || index} className="news-list-card" onClick={() => handleCardClick(newsItem.id)}>
-              <NewsCard
-                id={newsItem.id}
-                image={newsItem.image_url}
-                title={newsItem.title}
-                description={newsItem.content}
-                date={newsItem.published_at}
-                author={newsItem.author}
-                size="medium" // Adjust size for vertical cards
-              />
-            </div>
-          ))}
-
-          {/* Second row: 4 horizontal news cards */}
-          {otherNews.slice(6, 10).map((newsItem, index) => (
-            <div key={newsItem.id || index} className="news-list-card large" onClick={() => handleCardClick(newsItem.id)}>
-              <HorizontalNewsCard
-                id={newsItem.id}
-                image={newsItem.image_url}
-                title={newsItem.title}
-                description={newsItem.content}
-                date={newsItem.published_at}
-                author={newsItem.author}
-                size="large" // Adjust size for horizontal cards
-              />
-            </div>
-          ))}
-
-          {/* Third row: 6 vertical news cards */}
-          {otherNews.slice(10, 16).map((newsItem, index) => (
-            <div key={newsItem.id || index} className="news-list-card" onClick={() => handleCardClick(newsItem.id)}>
-              <NewsCard
-                id={newsItem.id}
-                image={newsItem.image_url}
-                title={newsItem.title}
-                description={newsItem.content}
-                date={newsItem.published_at}
-                author={newsItem.author}
-                size="medium"
-              />
-            </div>
-          ))}
+      {otherNews.length > 0 && (
+        <div className="news-list-more-news">
+          <h3>More News</h3>
+          <div className="news-list-more-news-grid">
+            {otherNews.map((newsItem) => (
+              <div
+                key={newsItem.id}
+                className="news-list-card"
+                onClick={() => handleCardClick(newsItem.id)}
+              >
+                <NewsCard
+                  id={newsItem.id}
+                  image={newsItem.image_url}
+                  title={newsItem.title}
+                  description={newsItem.content}
+                  date={newsItem.published_at}
+                  author={newsItem.author}
+                  size="medium" // Medium size for cards
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

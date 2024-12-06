@@ -1,8 +1,10 @@
 import os
 from flask import Blueprint, jsonify, request, current_app, send_from_directory
 from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash   
 from models import News, Comment, User, db
 from sqlalchemy import func
+import hashlib
 
 
 news_blueprint = Blueprint('news', __name__)
@@ -69,6 +71,44 @@ def create_article():
     return jsonify({'message': 'Article created successfully', 'article_id': new_article.id}), 201
 
 
+# Cache route to fetch all news articles
+@news_blueprint.route('/api/news/all', methods=['GET'])
+def get_all_articles():
+    # Fetch all distinct categories
+    categories = db.session.query(News.category).distinct().all()
+    
+    # Initialize a dictionary to store articles grouped by category
+    categorized_articles = {}
+
+    # Loop over each category
+    for category_tuple in categories:
+        category = category_tuple[0]  # Extract category name
+        
+        # Fetch articles for each category
+        articles = News.query.filter_by(category=category).all()
+        
+        # Serialize the articles
+        news_data = []
+        for article in articles:
+            article_data = {
+                'id': article.id,
+                'title': article.title,
+                'content': article.content,
+                'image_url': article.image_url,
+                'category': article.category,
+                'author': article.author,
+                'published_at': article.published_at,
+                'is_editor_pick': article.is_editor_pick,
+                'is_popular': article.is_popular
+            }
+            news_data.append(article_data)
+
+        # Add the articles to the categorized dictionary
+        categorized_articles[category] = news_data
+
+    # Return the articles grouped by category
+    return jsonify({'categories': categorized_articles}), 200
+
 
 # Update a news article
 @news_blueprint.route('/api/news/<int:article_id>', methods=['PUT'])
@@ -110,8 +150,12 @@ def delete_article(article_id):
         return jsonify({'error': 'Article not found'}), 404
 
     # Delete the image file from the file system
-    if article.image_url and os.path.exists(article.image_url):
-        os.remove(article.image_url)
+    if article.image_url:
+       filename = article.image_url.split('/')[-1]
+       image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+       if os.path.exists(image_path):
+           os.remove(image_path)
+
 
     db.session.delete(article)
     db.session.commit()
@@ -182,18 +226,19 @@ def get_random_article_by_category():
   
 #returns article sum and latest sum of that category
 @news_blueprint.route('/api/news/categories/sum', methods=['GET'])
-def get_all_categories():
-    try:
-        # Get distinct categories
-        categories = News.query.with_entities(News.category).distinct().all()
-        article_sum = 10 + 20  # Extract sum 
-        if article_sum == 30:
-          res = "Nyatwa"
-            
-
-          return jsonify({'sum':  res}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+def get_category_summary():
+    categories = db.session.query(News.category).distinct().all()
+    category_summary = []
+    
+    #access Category cover images from config
+    category_cover_images = current_app.config['CATEGORY_COVER_IMAGES']
+    for category_tuple in categories:
+        category_name = category_tuple[0]
+        cover_image_url = category_cover_images.get(category_name)
+        category_info = News.count_articles_in_category(category_name, cover_image_url)
+        category_summary.append(category_info)
+    
+    return jsonify(category_summary), 200
     
 
 # Get latest news articles
@@ -333,43 +378,45 @@ def add_comment(article_id):
 
 @news_blueprint.route('/api/news/comments/recent', methods=['GET'])
 def get_recent_comments():
-     comments = (
-        db.session.query(Comment, News.title)
-        .join(News, Comment.article_id == News.id)
-        .all()
-    )
+    category = request.args.get('category')
+    comments_query = db.session.query(Comment, News.title).join(News, Comment.article_id == News.id)
+    
+    # Filter by category if specified
+    if category:
+        comments_query = comments_query.filter(News.category == category)
+    
+    comments = comments_query.all()
+    comments_list = [
+        {
+            "author": comment.author,
+            "content": comment.content,
+            "article_id": comment.article_id,
+            "article_title": title  # Title from the News model
+        }
+        for comment, title in comments
+    ]
 
-    # Format the comments to include article title
-     comments_list = [
-         {
-             "author": comment.author,
-             "content": comment.content,
-             "article_id": comment.article_id,
-             "article_title": title  # add title from News model here
-         }
-         for comment, title in comments
-     ]
- 
-     return jsonify({"comments": comments_list}), 200
+    return jsonify({"comments": comments_list}), 200
 
 
-# Register a new user
+
+
 @news_blueprint.route('/api/users/register', methods=['POST'])
 def register_user():
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    is_admin = data.get('is_admin', False)  # Only set this field for admin users
 
     if not username or not email or not password:
         return jsonify({'error': 'Username, email, and password are required'}), 400
 
-    existing_user = User.query.filter_by(email=email).first()
-    if existing_user:
+    if User.query.filter_by(email=email).first():
         return jsonify({'error': 'User already exists'}), 400
 
-    new_user = User(username=username, email=email)
-    new_user.set_password(password)
+    new_user = User(username=username, email=email, is_admin=is_admin)
+    new_user.set_password(password)  # Hash the password before saving
 
     db.session.add(new_user)
     db.session.commit()
@@ -377,21 +424,30 @@ def register_user():
     return jsonify({'message': 'User registered successfully'}), 201
 
 
+
 # Log in a user
 @news_blueprint.route('/api/users/login', methods=['POST'])
 def login_user():
     data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    
+    # Check if both email and password are provided
+    if not data or not data.get('email') or not data.get('password'):
+        return jsonify({"error": "Email and password are required"}), 400
 
-    if not email or not password:
-        return jsonify({'error': 'Email and password are required'}), 400
+    # Retrieve the user from the database
+    user = User.query.filter_by(email=data['email']).first()
 
-    user = User.query.filter_by(email=email).first()
-    if not user or not user.check_password(password):
-        return jsonify({'error': 'Invalid email or password'}), 400
+    # Check if user exists
+    if not user:
+        return jsonify({"error": "User not found"}), 404
 
-    return jsonify({'message': 'Logged in successfully', 'user_id': user.id}), 200
+    # Verify password using the model's check_password method
+    if not user.check_password(data['password']):
+        print(data['password'])
+        return jsonify({"error": "Incorrect password"}), 400
+
+    # Return success response if authentication passes
+    return jsonify({"message": "Login successful"}), 200
 
 
 # Get an article by ID
@@ -421,6 +477,4 @@ def get_article_by_id(article_id):
         return jsonify({'error': str(e)}), 500
     
 
-    #add route that returns the total number of news articles published in each category and the sum of the latest in that category too
-    #i will connect to the categories component, the category cards will have to render category name, how many articles in that category /n
-    # and how many are latest and a simple description
+

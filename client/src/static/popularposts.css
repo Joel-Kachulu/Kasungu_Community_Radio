@@ -8,5 +8,9 @@
   display: flex;
   flex-direction: column; /* Stack the cards vertically */
   gap: 5px; /* Space between cards */
-  scroll-behavior: auto;
+}
+
+.popular-posts-section h2{
+  margin-bottom: 20px;
+  margin-top: 15px;
 }

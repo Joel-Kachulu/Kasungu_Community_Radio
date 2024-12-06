@@ -1,0 +1,46 @@
+/* Container Styling */
+.home-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent sidebar from wrapping by default */
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Sidebar Styling */
+  .home-sidebar {
+    flex: 0 0 250px; /* Sidebar fixed width */
+    background-color: #1e1e2f; /* Matches Sidebar component */
+    color: white;
+    height: 100%; /* Ensure it spans full height */
+    position: fixed; /* Stays fixed in place */
+    z-index: 1000;
+  }
+  
+  /* Content Area Styling */
+  .home-content {
+    margin-left: 250px; /* Leave space for the sidebar */
+    flex: 1; /* Fill remaining space */
+    padding: 20px;
+    background: #f4f4f9;
+    box-sizing: border-box;
+    overflow-y: auto; /* Scroll if content overflows */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .home-container {
+      flex-wrap: wrap; /* Sidebar and content stack */
+    }
+  
+    .home-sidebar {
+      flex: 1;
+      position: relative;
+      height: auto;
+    }
+  
+    .home-content {
+      margin-left: 0;
+      flex: 1;
+    }
+  }
+  

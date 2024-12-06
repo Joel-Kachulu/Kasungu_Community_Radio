@@ -11,26 +11,30 @@ import Home from './pages/Home';
 import FullNews from './components/FullNews';
 import SearchResults from './components/SearchResults';
 
+import NewsCategoryPage from './components/CategoryPage';
 
 
 function App() {
   return (
     <div className="app-container">
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/National" element={<National />} />
-        <Route path="/Sports" element={<Sports />} />
-        <Route path="/Entertainment" element={<Entertainment />} />
-        <Route path="/Politics" element={<Politics />} />
-        <Route path="/Business" element={<Business />} />
-        <Route path="/Health" element={<Health />} />
-        <Route path="/Other" element={<Other />} />
-        <Route path="/news/:id" element={<FullNews />} />
-        <Route path="/search" element={<SearchResults />} />
-      </Routes>
-    </Router>
-  </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/National" element={<National />} />
+          <Route path="/Sports" element={<Sports />} />
+          <Route path="/Entertainment" element={<Entertainment />} />
+          <Route path="/Politics" element={<Politics />} />
+          <Route path="/Business" element={<Business />} />
+          <Route path="/Health" element={<Health />} />
+          <Route path="/Other" element={<Other />} />
+          <Route path="/news/:id" element={<FullNews />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/news/category/:category" element={<NewsCategoryPage />} />
+
+
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

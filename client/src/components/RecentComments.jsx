@@ -1,14 +1,17 @@
+// RecentComments.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../static/RecentComments.css';
 
-const RecentComments = () => {
+const RecentComments = ({ category }) => {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState('');
 
   const fetchRecentComments = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/api/news/comments/recent');
+      const response = await axios.get('http://localhost:5000/api/news/comments/recent', {
+        params: { category }
+      });
       setComments(response.data.comments);
     } catch (err) {
       setError('Failed to fetch recent comments');
@@ -17,8 +20,10 @@ const RecentComments = () => {
   };
 
   useEffect(() => {
-    fetchRecentComments();
-  }, []);
+    if (category) {
+      fetchRecentComments();
+    }
+  }, [category]);
 
   return (
     <div className="recent-comments-container">
